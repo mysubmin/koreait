@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/register" method="post" name="frm">
+        <label>이메일</label>
+        <input type="text" name="korEmpEmail" class="email"> <br />
+        <label>비밀번호</label>
+        <input type="password" name="korEmpPasswd" class="pwd"> <br />
+        <label>비밀번호2</label>
+        <input type="password" class="pwd2"> <br />
+    
+
+        <div class="btn-wrap">
+            <button type="submit" class="btn">회원가입</button>
+        </div>
+    </form>
+
+    <script>
+        let email = document.querySelector(".email");
+        let pwd = document.querySelector(".pwd");
+        let pwd2 = document.querySelector(".pwd2");
+
+        let btn = document.querySelector(".btn");
+
+        function btnCheck(e) {
+            e.preventDefault();
+            if(email.value == "") {
+                alert("이메일 입력해 주세요.");
+                email.focus();
+                return ;
+            }
+            if(email.value.trim().length > 20) {
+                alert('이메일 주소가 너무 깁니다.');
+                email.value = "";
+                email.focus();
+                return ;
+            }
+            if(!pwd.value) {
+                alert("비밀번호를 입력하세요");
+                pwd.focus();
+                return ;
+            }
+
+            document.frm.submit();
+        }
+
+        btn.addEventListener('click', btnCheck);
+        
+    </script>
+</body>
+</html>

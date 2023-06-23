@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 예제 + js</title>
+    <style>
+        form {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        label {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- form 태그 안에 onsubmit을 이용한 방법 -->
+    <!-- 디비 저장할때 submit() -->
+    <form action="/register" method="post" enctype="multipart/form-data" 
+                                                name="frm" onsubmit="return frmCheck()">
+        <label>Email</label>
+        <input type="email" name="korEmpEmail" class="" />
+        <label>Password</label>
+        <input type="password" name="korEmpPasswd" class="" />
+        <label>Re-Password</label>
+        <input type="password" name="korEmpPasswd2" class="pwd2" />
+
+        <div class="btn-wrap">
+            <input type="submit" value="회원가입" />
+        </div>
+    </form>
+
+    <script>
+        let email = document.querySelector("input[type='email']");
+        let pwd = document.querySelector("input[name='korEmpPasswd']");
+        let pwd2 = document.querySelector(".pwd2");
+
+        function frmCheck() {
+            if(!email.value) {
+                alert('이메일 입력해 주세요');
+                email.value="";
+                email.focus();
+                return false;
+            }    
+            if(email.value.length >20) {
+                alert('이메일 주소가 너무 깁니다.\n다시 입력해주세요');
+                email.value="";
+                email.focus();
+                return false;
+            }
+            if(!pwd.value) {
+                alert('비밀번호를 입력하세요');
+                pwd.focus();
+                return false;
+            }
+            if(!pwd2.value) {
+                alert('비밀번호 확인 입력하세요');
+                pwd2.focus();
+                return false;
+            }
+            if(pwd.value != pwd2.value) {
+                alert('비밀번호가 다릅니다');
+                pwd.value="";
+                pwd2.value="";
+                pwd.focus();
+                return false;
+            }
+
+            document.frm.submit();
+        }
+    </script>
+</body>
+</html>

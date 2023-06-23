@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>반응형 메인 페이지</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      main {
+        padding: 150px 0;
+      }
+      main :nth-child(odd) {
+        background-color: #f8f8f8;
+      }
+      section {
+        max-width: 1600px;
+        margin: 0 auto;
+      }
+      .one {
+        display: flex;
+        justify-content: space-between;
+      }
+      .one article{
+        flex-basis: 50%;
+      }
+      .one h1 {
+        font-size: 2.5rem;
+        /* 1.25rem = 20px / 16; */
+        margin-bottom: 1.25rem;
+      }
+      .one p {
+        text-align: justify;
+        line-height: 1.5;
+        color: rgba(0, 0, 0, 0.7);
+        font-size: 20;
+      }
+      .title {
+        margin-bottom: 20px;
+        text-align: center;
+        font-size: 40px;
+      }
+      .two {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+     .box {
+        flex-basis: 24.75%;
+      }
+     img {
+        width: 100%;
+        height: 100%;
+      }
+</style>
+<body>
+    <main>
+        <section class="one">
+            <article>
+                <h1>KOREAIT ACADEMY</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex
+                    consectetur dignissimos in voluptates ratione corporis ullam
+                    dolor, labore deleniti excepturi quo cumque autem numquam beatae?
+                    Error, quis natus! Sed praesentium quae cumque, cupiditate
+                    adipisci nam perferendis magni, fugit beatae doloribus vitae. Ea
+                    iure cumque inventore architecto eos fugit, eaque voluptates! Ad
+                    magni officia adipisci optio eius aliquid consectetur, deleniti
+                    commodi labore distinctio! Dolorum sunt nihil deleniti qui sint,
+                    ut aperiam, nobis necessitatibus doloribus sequi commodi ab
+                    provident autem asperiores dolore distinctio? Recusandae nesciunt,
+                    soluta provident iure dolore molestias? Earum impedit magnam illo,
+                    exercitationem vel aliquam, debitis vero ad voluptatum,
+                    repellendus beatae consequuntur reiciendis dignissimos. Vero
+                    cumque cum alias eveniet, veniam laudantium magni qui animi
+                    tempora dolore itaque optio, dolorum a nesciunt adipisci rerum eos
+                    officia sunt est quidem maiores ducimus. Modi quasi ipsum ducimus
+                    doloribus nemo quisquam saepe, aliquid quibusdam hic error quidem,
+                    cumque molestias accusantium temporibus corrupti at magnam.
+                    Officia saepe minus quaerat atque earum. Officiis ipsa, omnis
+                    cupiditate ullam consectetur iste nulla fugit ipsam commodi
+                    accusantium nemo doloremque, cum veniam est similique explicabo
+                    dolorum impedit reiciendis ut tenetur dolorem nobis ex? Placeat
+                    quis eligendi maxime facere minima voluptatem molestiae impedit
+                    itaque neque laboriosam ratione deserunt veniam, obcaecati vitae,
+                    est odio eius id quasi debitis nesciunt possimus, laudantium ut.
+                    Sint molestiae officia quam. Cupiditate ducimus commodi, deserunt
+                    ipsa dignissimos temporibus voluptatum, sit iste perspiciatis
+                    explicabo at esse doloremque hic omnis perferendis corporis,
+                    possimus tenetur est quam fugiat illo. Voluptatibus cum possimus
+                    numquam culpa soluta nesciunt! Laboriosam eius quasi autem.</p>
+            </article>
+            <article>
+                <img src="images/m1.jpg" alt="">
+            </article>
+        </section>
+    </main>
+    <main>
+        <section class="">
+            <div class="title">
+                <h1>KOREAIT ACADEMY</h1>
+            </div>
+            <div class="content two">
+                <article class="box"><img src="images/f1.jpg" alt=""></article>
+                <article class="box"><img src="images/f2.jpg" alt=""></article>
+                <article class="box"><img src="images/f3.jpg" alt=""></article>
+                <article class="box"><img src="images/f4.jpg" alt=""></article>
+                <article class="box"><img src="images/f1.jpg" alt=""></article>
+                <article class="box"><img src="images/f2.jpg" alt=""></article>
+                <article class="box"><img src="images/f3.jpg" alt=""></article>
+                <article class="box"><img src="images/f4.jpg" alt=""></article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

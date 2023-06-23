@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .hero {
+            max-width: 100%;
+            height: 700px;
+            background-image: url(images/maimg.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            /* background-size: center; */
+
+           
+        }
+        .hero-area {
+            max-width: 1400px;
+            margin: 0 auto;
+
+            display: flex;
+            align-items: center;
+            height: 700px;
+        }
+        .hero-content {
+            width: 400px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 2px;
+            padding: 30px;
+        }
+        .btn-wrap {
+            text-align: right;            
+        }
+        .btn-wrap button {
+            background-color: transparent;
+            border: 1px solid #000;
+            padding: 8px;
+        }
+        .btn-wrap button:hover {
+            background-color: #555;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 8px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 1000px) {
+            .hero-content {
+                width: 100%;
+                background-color: rgba(255, 255, 255, 0.7);
+                border-radius: 2px;
+                padding: 30px;
+                margin: 0 10px;
+            }
+
+            .btn-wrap {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="hero-area">
+            <div class="hero-content">
+                <h1>Serving you<br />since 1989</h1>
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                    Sapiente non volup tatem illo suscipit rem quas, 
+                    molestiae doloremque. Recusandae, amet iste!</p>
+                <div class="btn-wrap">
+                    <a href="https://www.naver.com" target="_blank">
+                        <button>SHOP Merch</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
