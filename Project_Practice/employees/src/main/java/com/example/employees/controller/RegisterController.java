@@ -1,27 +1,30 @@
-package com.example.employees.controller;
+    private RegisterMapper reigsterMapper;
 
-import com.example.employees.dto.RegisterDto;
-import com.example.employees.mappers.RegisterMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
-
-@Controller
-public class RegisterController {
     @Autowired
-    RegisterMapper registerMapper;
+    public RegisterController(RegisterMapper reigsterMapper) {
+        this.reigsterMapper = reigsterMapper;
+    }
 
     @GetMapping("/main/register")
-    public String getRegister(){
+    public String getRegister() {
         return "main/register";
     }
+
     @PostMapping("/main/register")
     @ResponseBody
-    public List<RegisterDto> getDto() {
-        return registerMapper.getDto();
+    public List<DeptDto> getDept() {
+        return reigsterMapper.getDept();
     }
-}
+
+
+    @PostMapping("/main/getPos")
+    @ResponseBody
+    public List<PosDto> getPos(@RequestParam String selDeptValue) {
+        return reigsterMapper.getPos(selDeptValue);
+    }
+
+    @PostMapping("/main/emailCheck")
+    @ResponseBody
+    public int emailCheck(@RequestParam String email) {
+        return reigsterMapper.emailCheck(email);
+    }
