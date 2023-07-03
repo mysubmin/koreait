@@ -44,5 +44,10 @@ D.kor_dept_code = P.kor_dept_code;
 
 SELECT * FROM 부모 INNER JOIN 자식 ON 부모 = 자식;
 
+-- group by
+-- 부모 inner join 자식 on 부모.ID = 자식.ID
+SELECT D.kor_dept_code, D.kor_dept_name, COUNT(P.kor_dept_code) AS kor_pos_cnt FROM kor_dept D INNER JOIN kor_pos P ON D.kor_dept_code = P.kor_dept_code group by D.kor_dept_code, D.kor_dept_name;
+
+
 
 

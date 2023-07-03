@@ -113,6 +113,7 @@ a:hover {
     }
 }
 
+
 .alert {
     position:fixed;
     top:0;
@@ -121,10 +122,17 @@ a:hover {
     background-color:#000;
 }
 
+
+
+
+
+
+
 .alert p {
     color: #fff;
     text-align: center;
 }
+
 
 
 
