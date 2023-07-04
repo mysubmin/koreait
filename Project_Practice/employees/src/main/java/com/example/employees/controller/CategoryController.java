@@ -1,8 +1,7 @@
 package com.example.employees.controller;
 
-import com.example.employees.dto.DeptDto;
 import com.example.employees.dto.PosDto;
-import com.example.employees.mapper.CategoryMapper;
+import com.example.employees.mappers.CategoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +13,7 @@ import java.util.List;
 
 @Controller
 public class CategoryController {
+
     @Autowired
     private CategoryMapper categoryMapper;
 
@@ -22,9 +22,11 @@ public class CategoryController {
         model.addAttribute("dept", categoryMapper.getCateDept());
         return "admin/category";
     }
+
     @GetMapping("/admin/category/dept")
     @ResponseBody
     public List<PosDto> getDept(@RequestParam String deptCode) {
         return categoryMapper.getPos(deptCode);
     }
+
 }

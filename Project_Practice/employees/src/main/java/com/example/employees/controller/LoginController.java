@@ -21,7 +21,6 @@ public class LoginController {
         return "main/login";
     }
 
-
     @PostMapping("/login")
     public String checkLogin(@ModelAttribute RegisterDto registerDto, HttpServletRequest req) {
         RegisterDto r = loginMapper.getEmpInfo(registerDto);
@@ -29,7 +28,6 @@ public class LoginController {
         if( r != null ) {
             if( r.getKorEmpAuth().equals("Y") ) {
                 System.out.println("관리자 페이지로 이동");
-                //세션 정보 생성
 
                 HttpSession hs = req.getSession();
                 hs.setAttribute("emp", r);
