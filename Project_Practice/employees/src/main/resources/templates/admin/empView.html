@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 페이지 > 사원 관리 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/common.css?after}">
+    <link rel="stylesheet" th:href="@{/css/admin.css?after}">
+    <link rel="stylesheet" th:href="@{/css/empView.css?after}">
+    <script th:src="@{/js/jquery.js}"></script>
+
+</head>
+<body>
+    <div class="container" th:if="${session.emp != null}">
+        <header th:insert="~{fragment/header::headers}"></header>
+        <main>
+            <div class="main-wrap">
+                <div class="main-left" th:insert="~{fragment/left::lefts}"></div>
+                <div class="main-right">
+                    <div class="main-emp">
+                        <h2>:: KOREAIT EMPLOYEES VIEW</h2>
+                        <div class="tbl">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="tit w-15">사번</td>
+                                        <td class="w-35">[[${emp.korEmpId}]]</td>
+                                        <td class="tit w-15">사원명</td>
+                                        <td class="w-35">[[${emp.korEmpName}]]</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tit w-15">이메일</td>
+                                        <td class="w-75" colspan="3">[[${emp.korEmpEmail}]]</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tit w-15">부서명</td>
+                                        <td class="w-35">[[${emp.korEmpDept}]]</td>
+                                        <td class="tit w-15">직책</td>
+                                        <td class="w-35">[[${emp.korEmpPos}]]</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tit w-15">사원등급</td>
+                                        <td class="w-35">
+                                            <select id="empLevel" th:disabled="${emp.korEmpLevel eq 7}">
+                                                <option
+                                                        th:selected="${emp.korEmpLevel} eq ${level.korEmpLevelCode}"
+                                                        th:each="level: ${level}"
+                                                        th:value="${level.korEmpLevelCode}"
+                                                        th:text="${level.korEmpLevelName}"></option>
+                                            </select>
+                                        </td>
+                                        <td class="tit w-15">성별</td>
+                                        <td class="w-35">[[${emp.korEmpGender}]]</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tit w-15">사원등록일</td>
+                                        <td class="w-35">[[${#temporals.format(emp.korEmpCreated, 'yyyy. MM. dd hh:mm:ss')}]]</td>
+                                        <td class="tit w-15">정보수정일</td>
+                                        <td class="w-35">[[${emp.korEmpModified}]]</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="btn-wrap">
+                                <a th:href="@{/admin/employees}">
+                                    <button>사원목록</button>
+                                </a>
+                                <a th:href="@{/admin/employees/delete}">
+                                    <button>사원삭제</button>
+                                </a>
+                                <a th:href="@{/admin/employees/edit}">
+                                    <button>사원수정</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div th:unless="${session.emp != null}">
+        <script>
+            location.href = "/main/login";
+        </script>
+    </div>
+</body>
+</html>

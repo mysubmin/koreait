@@ -7,6 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/common.css?after}">
     <link rel="stylesheet" th:href="@{/css/admin.css?after}">
     <link rel="stylesheet" th:href="@{/css/employees.css?after}">
+    <script th:src="@{/js/jquery.js}"></script>
 </head>
 <body>
     <div class="container" th:if="${session.emp != null}">
@@ -56,7 +57,8 @@
                                     <td>[[${  #temporals.format(emp.korEmpCreated, 'yyyy. MM. dd')   }]]</td>
                                     <td>[[${  #temporals.format(emp.korEmpModified, 'yyyy-MM-dd')  }]]</td>
                                     <td>
-                                        <a href="">
+                                        <!--@PathVariable, QueryString-->
+                                        <a th:href="@{/admin/employees/view?(korEmpId=${emp.korEmpId})}">
                                             <button class="btn clr1">
                                                 상세보기
                                             </button>
@@ -66,7 +68,7 @@
                                                 정보수정
                                             </button>
                                         </a>
-                                        <a href="">
+                                        <a th:onclick="deleteEmp([[${emp.korEmpId}]])">
                                             <button class="btn clr3">
                                                 정보삭제
                                             </button>
@@ -80,6 +82,31 @@
             </div>
         </main>
     </div>
+
+    <script>
+        function deleteEmp(korEmpId) {
+            if( confirm("사원정보를 삭제하시겠습니까?\n삭제된 정보는 복원할 수 없습니다.") ) {
+                $.ajax({
+                    type: "get",
+                    url : "/admin/employees/delete",
+                    dataType: "json",
+                    data: { korEmpId },
+                    success: function( res ) {
+                        if(res.msg == "success") {
+                            alert("사원 정보가 삭제 되었습니다.");
+                            location.reload();
+                        }
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+
+            }else{
+                return false;
+            }
+        }
+    </script>
 
     <div th:unless="${session.emp != null}">
         <script>
