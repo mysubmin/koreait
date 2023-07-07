@@ -34,7 +34,15 @@
                             <tbody>
                                 <tr th:each="emp : ${emp}">
                                     <td th:text="${emp.korEmpId}"></td>
-                                    <td>사진</td>
+                                    <td>
+                                        <div class="empPhoto">
+                                            <img th:src="@{../../upload/} + ${emp.korEmpImageName}" alt="">
+                                            <div class="photoBtn">
+                                                <!--<button th:onclick="popup([[${emp.korEmpId}]])">IMAGE UPLOAD</button>-->
+                                                <button th:onclick="modal([[${emp.korEmpId}]])">IMAGE UPLOAD</button>
+                                            </div>
+                                        </div>
+                                    </td>
                                     <td>
                                         <select id="selDept">
                                             <option value="100">인사과</option>
@@ -69,7 +77,7 @@
                                             </button>
                                         </a>
                                         <a th:onclick="deleteEmp([[${emp.korEmpId}]])">
-                                            <button class="btn clr3">
+                                            <button class="btn clr3" th:disabled="${emp.korEmpLevel eq 7}">
                                                 정보삭제
                                             </button>
                                         </a>
@@ -82,6 +90,97 @@
             </div>
         </main>
     </div>
+
+    <!-- IMAGE UPLOAD(MODAL) -->
+    <style>
+        #modal {
+            position:absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background-color: rgba(0, 0, 0, .7);
+            display:none;
+        }
+
+        .close {
+            color:#fff;
+            font-size:100px;
+            position:absolute;
+            top:20px;
+            right:20px;
+            cursor:pointer;
+        }
+
+        .modal-box {
+            width:400px;
+            padding: 50px;
+            background-color:#fff;
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #modal button {
+            background-color: #0b5ed7;
+            border:0;
+            color:#fff;
+            padding:10px 12px;
+            text-align:center;
+            cursor: pointer;
+            margin-top:10px;
+        }
+    </style>
+
+    <div id="modal">
+        <span class="close" th:onclick="closeModal()">X</span>
+        <div class="modal-box">
+            <form>
+                <input type="file" name="uploadFile" class="uploadFile" /><br />
+                <button type="button" id="btn">Image Upload</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+        function modal(korEmpId) {
+            document.querySelector("#modal").style.display = "block";
+
+            document.querySelector("#btn").addEventListener("click", function () {
+                let frmData = new FormData();
+                frmData.append("uploadFile", $(".uploadFile")[0].files[0] );
+                frmData.append("korEmpId", korEmpId);
+
+                $.ajax({
+                    type: "post",
+                    url : "/admin/employees/upload",
+                    encType: "multipart/form-data",
+                    data: frmData,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    success: function( res ) {
+                        if(res.msg == "success") {
+                            location.reload();
+                        }
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+
+            });
+
+        }
+
+        function closeModal() {
+            document.querySelector("#modal").style.display = "none";
+        }
+    </script>
+
+    <!-- // IMAGE UPLOAD(MODAL) -->
 
     <script>
         function deleteEmp(korEmpId) {
@@ -106,6 +205,16 @@
                 return false;
             }
         }
+
+
+        function popup(korEmpId) {
+            let url = "/admin/employees/popup";
+            let nick = "upload";
+            let opt = "width=400, height=300, top=100, left=100, location=no";
+
+            window.open(url, nick, opt);
+        }
+
     </script>
 
     <div th:unless="${session.emp != null}">

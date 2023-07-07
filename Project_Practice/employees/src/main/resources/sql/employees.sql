@@ -21,6 +21,15 @@ primary key(kor_emp_id)
 INSERT INTO kor_employees
 VALUES(NULL, 'mail@mail.com', '1111', '관리자', 'M' , '100', '101', 7, 'Y', now(), now(), '', 0, '');
 
+-- 테이블 2개 조인하면서 해당 id 값만 조회
+SELECT D.kor_dept_name FROM kor_dept D INNER JOIN kor_employees E ON
+D.kor_dept_code = E.kor_emp_dept WHERE E.kor_emp_id = 7;
+
+-- 테이블 3개 조인하면서 해당 id 값만 조회
+SELECT D.*, P.*, E.* FROM kor_dept D INNER JOIN kor_employees E ON
+D.kor_dept_code = E.kor_emp_dept INNER JOIN kor_pos P ON
+E.kor_emp_pos = P.kor_pos_code WHERE E.kor_emp_id=7;
+
 
 
 

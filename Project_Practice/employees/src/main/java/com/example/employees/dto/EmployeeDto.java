@@ -20,4 +20,15 @@ public class EmployeeDto {
     private String korEmpImageName;
     private Long korEmpImageSize;
     private String korEmpTransName;
+    private String korDeptName;
+    private String korPosName;
 }
+
+
+
+
+
+
+
+
+
