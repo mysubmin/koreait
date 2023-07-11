@@ -35,8 +35,16 @@
                                 <tr th:each="emp : ${emp}">
                                     <td th:text="${emp.korEmpId}"></td>
                                     <td>
-                                        <div class="empPhoto">
+                                        <div class="empPhoto" th:if="${not #strings.isEmpty(emp.korEmpImageName)}">
                                             <img th:src="@{../../upload/} + ${emp.korEmpImageName}" alt="">
+                                            <div class="photoBtn">
+                                                <!--<button th:onclick="popup([[${emp.korEmpId}]])">IMAGE UPLOAD</button>-->
+                                                <button th:onclick="modal([[${emp.korEmpId}]])">IMAGE UPLOAD</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="empPhoto" th:unless="${not #strings.isEmpty(emp.korEmpImageName)}">
+                                            <img th:src="@{/images/nobody.png}" alt="">
                                             <div class="photoBtn">
                                                 <!--<button th:onclick="popup([[${emp.korEmpId}]])">IMAGE UPLOAD</button>-->
                                                 <button th:onclick="modal([[${emp.korEmpId}]])">IMAGE UPLOAD</button>
@@ -44,14 +52,19 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <select id="selDept">
-                                            <option value="100">인사과</option>
+                                        <select id="selDept" disabled>
+                                            <option
+                                                    th:each="dept: ${dept}"
+                                                    th:value="${dept.korDeptCode}"
+                                                    th:text="${dept.korDeptName}"
+                                                    th:selected="${emp.korEmpDept} == ${dept.korDeptCode}"></option>
                                         </select>
-                                        <select id="selPos">
-                                            <option value="101">인사과장</option>
-                                        </select>
-                                        <select id="selLevel">
-                                            <option value="7">Level 7</option>
+                                        <select id="selLevel" th:onchange="updateLevel([[${emp.korEmpId}]], this.value)">
+                                            <option
+                                                    th:selected="${emp.korEmpLevel} == ${level.korEmpLevelCode}"
+                                                    th:each = "level: ${level}"
+                                                    th:value="${level.korEmpLevelCode}"
+                                                    th:text="${level.korEmpLevelName}"></option>
                                         </select>
                                     </td>
                                     <td>
@@ -163,6 +176,7 @@
                     cache: false,
                     success: function( res ) {
                         if(res.msg == "success") {
+                            alert("사원 이미지가 수정 되었습니다.");
                             location.reload();
                         }
                     },
@@ -213,6 +227,29 @@
             let opt = "width=400, height=300, top=100, left=100, location=no";
 
             window.open(url, nick, opt);
+        }
+
+        function updateLevel(korEmpId, korEmpLevel) {
+            let obj = {
+                korEmpId,
+                korEmpLevel
+            };
+
+            $.ajax({
+                    type: "get",
+                    url : "/admin/employees/updateLevel",
+                    dataType: "json",
+                    data: obj,
+                    success: function( res ) {
+                        if(res.msg == "success") {
+                            alert("사원 등급이 수정 되었습니다.");
+                            location.reload();
+                        }
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
         }
 
     </script>
