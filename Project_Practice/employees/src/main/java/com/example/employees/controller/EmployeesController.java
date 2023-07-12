@@ -5,6 +5,7 @@ import com.example.employees.dto.EmployeeDto;
 import com.example.employees.mappers.EmployeeMapper;
 import com.example.employees.mappers.LevelMapper;
 import com.example.employees.mappers.ReigsterMapper;
+import com.example.employees.service.PagingSrv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,11 @@ public class EmployeesController {
 
     private String UPLOAD_LOCATION = "D:\\koreait\\Java\\spring\\employees\\src\\main\\resources\\static\\upload";
 
+    @Autowired
     private EmployeeMapper employeeMapper;
+
+    @Autowired
+    private PagingSrv pagingSrv;
 
     @Autowired
     private LevelMapper levelMapper;
@@ -39,10 +44,16 @@ public class EmployeesController {
     }
 
     @GetMapping("/admin/employees")
-    public String getEmpList(Model model) {
+    public String getEmpList(Model model,
+                             @RequestParam(defaultValue = "1", value="page") int page ) {
         model.addAttribute("dept", reigsterMapper.getDept());
-        model.addAttribute("emp", employeeMapper.getEmpList());
         model.addAttribute("level", employeeMapper.getLevel());
+        /* paging 처리한 목록 출력하기 */
+        model.addAttribute("emp", pagingSrv.getPagingEmp(page));
+
+        //page 번호 출력
+        model.addAttribute("pagination", pagingSrv.pageCalc(page));
+
         return "admin/employees";
     }
 
@@ -120,4 +131,20 @@ public class EmployeesController {
         return map;
     }
 
+    @GetMapping("/admin/employees/update")
+    public String getEmpUpdate(@RequestParam int korEmpId, Model model) {
+        model.addAttribute("emp", employeeMapper.getEmpView(korEmpId));
+        model.addAttribute("dept", reigsterMapper.getDept());
+        model.addAttribute("level", employeeMapper.getLevel());
+        return "admin/empUpdate";
+    }
+
 }
+
+
+
+
+
+
+
+

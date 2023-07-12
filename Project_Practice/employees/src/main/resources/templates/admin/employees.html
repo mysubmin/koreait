@@ -84,7 +84,7 @@
                                                 상세보기
                                             </button>
                                         </a>
-                                        <a href="">
+                                        <a th:href="@{/admin/employees/update?(korEmpId=${emp.korEmpId})}">
                                             <button class="btn clr2">
                                                 정보수정
                                             </button>
@@ -98,6 +98,15 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div>
+                            <a th:if="${pagination.page > 1}">이전</a>
+                            <a th:href="@{/admin/employees?(page=${i})}"
+                               th:each="i: ${ #numbers.sequence(pagination.startPage, pagination.endPage, 1)}">
+                                <button>[[${i}]]</button>
+                            </a>
+
+                            <a href="">다음</a>
+                        </div>
                     </div>
                 </div>
             </div>
