@@ -44,6 +44,15 @@ public interface EmployeeMapper {
     @Select("SELECT COUNT(*) FROM kor_employees")
     int getTotalCount();
 
+    @Update("UPDATE kor_employees SET " +
+            "kor_emp_email = #{korEmpEmail}, " +
+            "kor_emp_passwd=#{korEmpPasswd}, " +
+            "kor_emp_name = #{korEmpName}, " +
+            "kor_emp_gender = #{korEmpGender}, " +
+            "kor_emp_dept = #{korEmpDept}, " +
+            "kor_emp_pos = #{korEmpPos}, kor_emp_level = #{korEmpLevel}, " +
+            "kor_emp_modified = NOW() WHERE kor_emp_id = #{korEmpId}")
+    void setEmpUpdate(EmployeeDto employeeDto);
 }
 
 

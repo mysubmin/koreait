@@ -24,7 +24,7 @@ import java.util.Map;
 @Controller
 public class EmployeesController {
 
-    private String UPLOAD_LOCATION = "D:\\koreait\\Java\\spring\\employees\\src\\main\\resources\\static\\upload";
+    private String UPLOAD_LOCATION = "D:\\Psm\\Spring\\employees\\src\\main\\resources\\static\\upload";
 
     @Autowired
     private EmployeeMapper employeeMapper;
@@ -137,6 +137,19 @@ public class EmployeesController {
         model.addAttribute("dept", reigsterMapper.getDept());
         model.addAttribute("level", employeeMapper.getLevel());
         return "admin/empUpdate";
+    }
+
+    @PostMapping("/admin/employees/update")
+    @ResponseBody
+    public Map<String, Object> setEmpUpdate(@ModelAttribute EmployeeDto employeeDto) {
+        Map<String, Object> map = new HashMap<>();
+
+        if( employeeDto.getKorEmpId() > 0) {
+            employeeMapper.setEmpUpdate(employeeDto);
+            map.put("msg", "success");
+        }
+
+        return map;
     }
 
 }

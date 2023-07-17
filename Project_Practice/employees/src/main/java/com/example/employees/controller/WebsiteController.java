@@ -22,7 +22,7 @@ import java.util.Map;
 @Controller
 public class WebsiteController {
 
-    String UPLOAD_LOCATION = "D:\\koreait\\Java\\spring\\employees\\src\\main\\resources\\static\\upload";
+    String UPLOAD_LOCATION = "D:\\Psm\\Spring\\employees\\src\\main\\resources\\static\\upload";
 
     @Autowired
     private WebsiteMapper websiteMapper;

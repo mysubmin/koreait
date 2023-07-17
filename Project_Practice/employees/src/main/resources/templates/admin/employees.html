@@ -99,13 +99,35 @@
                             </tbody>
                         </table>
                         <div>
+                            <!--
                             <a th:if="${pagination.page > 1}">이전</a>
                             <a th:href="@{/admin/employees?(page=${i})}"
                                th:each="i: ${ #numbers.sequence(pagination.startPage, pagination.endPage, 1)}">
                                 <button>[[${i}]]</button>
                             </a>
+                            <a th:if="${pagination.page < pagination.totalPage}">다음</a>
+                            -->
+                            <a th:if="${pagination.page > 1}" th:href="@{/admin/employees?(page=${pagination.page - 1})}">
+                                <button>이전</button>
+                            </a>
+                            <a th:unless="${pagination.page > 1}">
+                                <button>이전</button>
+                            </a>
 
-                            <a href="">다음</a>
+
+                            <a th:href="@{/admin/employees?(page=${i})}"
+                               th:each="i: ${ #numbers.sequence(pagination.startPage, pagination.endPage, 1)}">
+                                <button>[[${i}]]</button>
+                            </a>
+                            <a
+                                    th:href="@{/admin/employees?(page=${pagination.page + 1})}"
+                                    th:if="${pagination.page < pagination.totalPage}">
+                                <button>이후</button>
+                            </a>
+                            <a
+                                    th:unless="${pagination.page < pagination.totalPage}">
+                                <button>이후</button>
+                            </a>
                         </div>
                     </div>
                 </div>
