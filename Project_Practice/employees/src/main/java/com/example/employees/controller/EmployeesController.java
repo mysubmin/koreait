@@ -24,7 +24,7 @@ import java.util.Map;
 @Controller
 public class EmployeesController {
 
-    private String UPLOAD_LOCATION = "D:\\Psm\\Spring\\employees\\src\\main\\resources\\static\\upload";
+    private String UPLOAD_LOCATION = "D:\\koreait\\Java\\spring\\employees\\src\\main\\resources\\static\\upload";
 
     @Autowired
     private EmployeeMapper employeeMapper;

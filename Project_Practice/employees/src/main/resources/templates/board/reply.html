@@ -6,7 +6,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>게시판 글쓰기</title>
+    <title>게시판 답글달기</title>
     <style>
         .wrap {
             width:1500px;
@@ -60,7 +60,7 @@
                 <td>
                     <texarea id="editor"
                              name="korBoardContent"
-                             class="korBoardContent"></texarea>
+                             class="korBoardContent" th:utext="${board.korBoardContent}"></texarea>
                 </td>
             </tr>
             <tr>
@@ -71,11 +71,22 @@
             </tr>
         </table>
         <div>
-            <button type="button" class="btn">저장하기</button>
+            <button type="button" class="btn">답글달기</button>
             <a href="/admin/board">
                 <button type="button">목록으로</button>
             </a>
         </div>
+        <input type="hidden" name="korBoardId"
+               class="korBoardId" th:value="${board.korBoardId}" />
+
+        <input type="hidden" name="korBoardReplyGrp"
+               class="korBoardReplyGrp" th:value="${board.korBoardReplyGrp}" />
+
+        <input type="hidden" name="korBoardReplyGrpSeq"
+               class="korBoardReplyGrpSeq" th:value="${board.korBoardReplyGrpSeq}" />
+
+        <input type="hidden" name="korBoardReplyGrpSeqIndent"
+               class="korBoardReplyGrpSeqIndent" th:value="${board.korBoardReplyGrpSeqIndent}" />
     </form>
 </div>
     <style>
@@ -94,10 +105,15 @@
 
 
         let korBoardNotice      = document.querySelector(".korBoardNotice");
-
         let korBoardWriter      = document.querySelector(".korBoardWriter");
         let korBoardSubject     = document.querySelector(".korBoardSubject");
         let korBoardContent     = document.querySelector(".korBoardContent");
+
+        let korBoardId                  = document.querySelector(".korBoardId");
+        let korBoardReplyGrp            = document.querySelector(".korBoardReplyGrp");
+        let korBoardReplyGrpSeq         = document.querySelector(".korBoardReplyGrpSeq");
+        let korBoardReplyGrpSeqIndent   = document.querySelector(".korBoardReplyGrpSeqIndent");
+
         let btn                 = document.querySelector(".btn");
 
 
@@ -129,9 +145,15 @@
             frmData.append("korBoardContent",  myEditor.getData());
             frmData.append("uploadFile", $("#attach")[0].files[0] );
 
+            frmData.append("korBoardId",                   korBoardId.value);
+            frmData.append("korBoardReplyGrp",             korBoardReplyGrp.value);
+            frmData.append("korBoardReplyGrpSeq",          korBoardReplyGrpSeq.value);
+            frmData.append("korBoardReplyGrpSeqIndent",    korBoardReplyGrpSeqIndent.value);
+
+
             $.ajax({
                 type: "post",
-                url : "/admin/board/write",
+                url : "/admin/board/reply",
                 encType: "multipart/form-data",
                 data: frmData,
                 processData: false,
@@ -139,11 +161,12 @@
                 cache: false,
                 success: function( res ) {
                     if( res.msg == "success" ) {
-                        alert("게시물이 저장되었습니다.");
+                        alert("게시물 답글이 저장 되었습니다.");
                         location.href = "/admin/board?page=1";
                     }
                 }
             });
+
 
         } );
 

@@ -6,6 +6,7 @@ import com.example.employees.mappers.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,6 +16,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin/board")
@@ -27,7 +30,8 @@ public class BoardController {
     private BoardMapper boardMapper;
 
     @GetMapping("")
-    public String getBoardList() {
+    public String getBoardList(Model model) {
+        model.addAttribute("board", boardMapper.getBoard());
         return "board/list";
     }
 
@@ -38,47 +42,140 @@ public class BoardController {
 
     @PostMapping("/write")
     @ResponseBody
-    public String setBoardWrite(
-            @ModelAttribute BoardDto boardDto, MultipartFile uploadFile) {
-        //원본파일 이름, 원본파일 용량, 원본파일 이름 바꾸기(날짜로 )
-//        System.out.println("원본파일명 : " + uploadFile.getOriginalFilename());
-//        System.out.println("원본파일용량 : " + uploadFile.getSize() + "bytes");
-//
-//        String oName = uploadFile.getOriginalFilename();
-//        String ext  = oName.substring(oName.lastIndexOf("."));
-//        System.out.println("원본파일확장자 : " + ext);
-//
-//        String tName = System.currentTimeMillis() + ext;
-//        System.out.println("변환된파일명 : " + tName);
+    public Map<String, Object> setBoardWrite(
+            @ModelAttribute BoardDto boardDto,
+            MultipartFile uploadFile) {
+
+            Map<String, Object> map = new HashMap<>();
+
+            try {
+
+                if( uploadFile != null ) {
+                    String saveDir =
+                            new SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis());
+
+                    File f = new File(UPLOAD_LOCATION + "\\" + saveDir);
+
+                    if( !f.exists() ) {
+                        f.mkdir();
+                    }
+
+                    String oName = uploadFile.getOriginalFilename();
+                    String ext  = oName.substring(oName.lastIndexOf("."));
+                    String tName = System.currentTimeMillis() + ext;
+
+                    Path p = Paths.get(String.valueOf(f), tName);
+                    Files.write(p, uploadFile.getBytes());
+
+
+                   boardDto.setKorBoardUploadName(uploadFile.getOriginalFilename());
+                   boardDto.setKorBoardUploadSize(uploadFile.getSize());
+                   boardDto.setKorBoardUploadTrans(tName);
+                }
+                boardDto.setKorBoardReplyGrp(boardMapper.getMaxCnt());
+                boardMapper.setBoardWrite(boardDto);
+
+                map.put("msg", "success");
+
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+
+
+        return map;
+    }
+
+    @GetMapping("/delete")
+    public String deleteBoard(@RequestParam int korBoardId) {
+        if( korBoardId > 0 ) {
+            boardMapper.deleteBoard(korBoardId);
+        }
+        return "redirect:/admin/board?page=1";
+    }
+
+    @GetMapping("/view")
+    public String viewBoard(@RequestParam int korBoardId, Model model) {
+        if( korBoardId > 0 ) {
+            model.addAttribute("board", boardMapper.viewBoard(korBoardId));
+        }
+        return "board/view";
+    }
+
+
+    @GetMapping("/modify")
+    public String modifyBoard(@RequestParam int korBoardId, Model model) {
+        if( korBoardId > 0 ) {
+            model.addAttribute("board", boardMapper.viewBoard(korBoardId));
+        }
+        return "board/modify";
+    }
+
+    @PostMapping("/modify")
+    @ResponseBody
+    public Map<String, Object> setBoardUpdate(
+            @ModelAttribute BoardDto boardDto,
+            MultipartFile uploadFile) {
+
+        Map<String, Object> map = new HashMap<>();
+
+        System.out.println(boardDto);
+        System.out.println(uploadFile.getOriginalFilename());
+
+        return map;
+    }
+
+    @GetMapping("/reply")
+    public String setReply(@ModelAttribute BoardDto boardDto, Model model) {
+        model.addAttribute("board", boardMapper.viewBoard(boardDto.getKorBoardId()));
+        return "board/reply";
+    }
+
+    @PostMapping("/reply")
+    @ResponseBody
+    public Map<String, Object> setReply(@ModelAttribute BoardDto boardDto,
+                           MultipartFile uploadFile) {
+        Map<String, Object> map = new HashMap<>();
 
         try {
-            if(uploadFile != null) {
-                // 날짜별 폴더 생성 만들기
-                String saveDir = new SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis());
-                // 폴더생성 : File 객체 사용
+
+            if( uploadFile != null ) {
+                String saveDir =
+                        new SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis());
+
                 File f = new File(UPLOAD_LOCATION + "\\" + saveDir);
 
-                if(!f.exists()) {
+                if( !f.exists() ) {
                     f.mkdir();
                 }
 
-                boardDto.setKorBoardUploadName(uploadFile.getOriginalFilename());
-                boardDto.setKorBoardUploadSize(uploadFile.getSize());
-
                 String oName = uploadFile.getOriginalFilename();
-                String ext = oName.substring(oName.lastIndexOf("."));
+                String ext  = oName.substring(oName.lastIndexOf("."));
                 String tName = System.currentTimeMillis() + ext;
 
                 Path p = Paths.get(String.valueOf(f), tName);
                 Files.write(p, uploadFile.getBytes());
 
+
+                boardDto.setKorBoardUploadName(uploadFile.getOriginalFilename());
+                boardDto.setKorBoardUploadSize(uploadFile.getSize());
                 boardDto.setKorBoardUploadTrans(tName);
             }
-            boardMapper.setBoardWrite(boardDto);
-        }catch (Exception e) {
+
+            /* reply에 필요한 값 설정 */
+            boardDto.setKorBoardReplyGrp(boardDto.getKorBoardReplyGrp());
+            boardDto.setKorBoardReplyGrpSeq(boardDto.getKorBoardReplyGrpSeq() + 1);
+            boardDto.setKorBoardReplyGrpSeqIndent(boardDto.getKorBoardReplyGrpSeqIndent()+ 1);
+
+
+            boardMapper.replyBoard(boardDto);
+
+            map.put("msg", "success");
+
+        }catch(Exception e){
             e.printStackTrace();
         }
 
-        return "";
+        return map;
     }
+
 }
